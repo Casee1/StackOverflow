@@ -1,0 +1,2570 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+
+import {RegisterComponent} from "./auth/register/register.component";
+import {LoginComponent} from './auth/login/login.component';
+import {QuestionComponent} from "./auth/question/question.component";
+import {AuthComponent} from "./auth/auth/auth.component";
+
+
+const routes: Routes = [
+  { path: '', component: AuthComponent },
+  { path: 'register', component: RegisterComponent },
+  { path : 'login', component: LoginComponent },
+  { path : 'question', component: QuestionComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+<router-outlet>
+
+</router-outlet>
+
+
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent
+      ],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it(`should have as title 'sd2'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.title).toEqual('sd2');
+  });
+
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sd2');
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
+})
+export class AppComponent {
+  title = 'StackOverflow';
+
+  register() {
+    // Implement your register logic here
+    console.log('Register clicked');
+  }
+
+  login() {
+    // Implement your login logic here
+    console.log('Log in clicked');
+  }
+
+}
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import {AuthModule} from "./auth/auth.module";
+import {HttpClientInMemoryWebApiModule} from "angular-in-memory-web-api";
+import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
+
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    AuthModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+<p>answer works!</p>
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AnswerComponent } from './answer.component';
+
+describe('AnswerComponent', () => {
+  let component: AnswerComponent;
+  let fixture: ComponentFixture<AnswerComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AnswerComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(AnswerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-answer',
+  templateUrl: './answer.component.html',
+  styleUrl: './answer.component.scss'
+})
+export class AnswerComponent {
+
+}
+<router-outlet></router-outlet>
+<body style="background-color: orange;">
+<div style="text-align: center; margin-top: 100px;">
+  <h1>Stack Overflow</h1>
+  <div style="margin-top: 20px;">
+    <button routerLink="/register">Register</button>
+    <button routerLink="/login">Log in</button>
+  </div>
+</div>
+</body>
+body {
+  background-color: orange;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AuthComponent } from './auth.component';
+
+describe('AuthComponent', () => {
+  let component: AuthComponent;
+  let fixture: ComponentFixture<AuthComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AuthComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(AuthComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-auth',
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.scss'
+})
+export class AuthComponent {
+
+}
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { QuestionComponent } from './question/question.component';
+import { AuthComponent } from './auth/auth.component';
+import {RouterModule} from "@angular/router";
+import { FormsModule} from "@angular/forms";
+import { AnswerComponent } from './answer/answer.component';
+
+
+@NgModule({
+  declarations: [
+    RegisterComponent,
+    LoginComponent,
+    QuestionComponent,
+    AuthComponent,
+    AnswerComponent
+  ],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    FormsModule
+  ]
+})
+export class AuthModule { }
+<div class="login-container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div>
+      <label>Username:</label>
+      <input type="text" formControlName="username">
+      <div *ngIf="f['username']touched">
+        Username is required.
+      </div>
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" formControlName="password">
+      <div *ngIf="f['password']touched">
+        Password is required.
+      </div>
+      <div *ngIf="f['password']touched">
+        Password must be at least 2 characters.
+      </div>
+    </div>
+    <button type="submit" [disabled]="loading">Log In</button>
+  </form>
+</div>
+.login-container {
+  max-width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+}
+
+.login-container div {
+  margin-bottom: 10px;
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [LoginComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  loading = false;
+
+  constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required]],  // Changed from email to username
+      password: ['', [Validators.required, Validators.minLength(2)]]
+    });
+  }
+
+  get f() { return this.loginForm.controls; }
+
+  login(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
+
+    this.userService.findUserByUsername(username).subscribe({
+      next: (user: any) => {
+        this.router.navigate(['/question']);
+      },
+      error: (error: any) => {
+        console.error('Login failed:', error);
+        this.loading = false;
+      }
+    });
+  }
+}
+<div class="container">
+  <!-- Filter Form -->
+  <div class="filter-form">
+    <form [formGroup]="filterForm" (ngSubmit)="filterQuestions()">
+      <div>
+        <label for="filterTag">Filter by Tag:</label>
+        <input formControlName="filterTag" id="filterTag" type="text">
+      </div>
+      <div>
+        <label for="filterText">Filter by Text:</label>
+        <input formControlName="filterText" id="filterText" type="text">
+      </div>
+      <div>
+        <label for="filterUser">Filter by User:</label>
+        <input formControlName="filterUser" id="filterUser" type="text">
+      </div>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  <!-- Question List -->
+  <div class="question-list">
+    <div *ngFor="let question of questions">
+      <h3>{{ question.title }}</h3>
+      <p>{{ question.text }}</p>
+      <p>{{ question.date }}</p>
+      <p>{{ question.time }}</p>
+      <small>Tag: {{ question.tags }}</small>
+      <div>
+        <button (click)="deleteQuestion(question.question_id)">Delete</button>
+        <button (click)="editQuestion(question)">Edit</button>
+        <button>Like</button>
+        <button>Dislike</button>
+      </div>
+      <!-- Display Answers -->
+      <div *ngIf="answersMap[question.question_id]">
+        <h4>Answers:</h4>
+        <div *ngFor="let answer of answersMap[question.question_id]">
+          <p>{{ answer.text }}</p>
+          <p>{{ answer.date }}</p>
+          <p>{{ answer.time }}</p>
+          <div>
+            <button (click)="editAnswer(answer)">Edit Answer</button>
+            <button (click)="deleteAnswer(answer.answer_id)">Delete Answer</button>
+            <button>Like Answer</button>
+            <button>Dislike Answer</button>
+          </div>
+        </div>
+        <!-- Add Answer Form -->
+        <form [formGroup]="addAnswerForm" (ngSubmit)="submitFormAnswer(question.question_id)">
+          <div>
+            <label for="text">Answer:</label>
+            <textarea formControlName="text" id="text" required></textarea>
+          </div>
+          <button type="submit" [disabled]="addAnswerForm.invalid">
+            {{ isEditingAnswer ? 'Update Answer' : 'Add Answer' }}
+          </button>
+          <button type="button" *ngIf="isEditingAnswer" (click)="cancelEditAnswer()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Question Form -->
+  <div class="add-question-form">
+    <form [formGroup]="addQuestionForm" (ngSubmit)="submitForm()">
+      <div>
+        <label for="title">Title:</label>
+        <input formControlName="title" id="title" type="text" required>
+      </div>
+      <div>
+        <label for="text">Question:</label>
+        <textarea formControlName="text" id="text" required></textarea>
+      </div>
+      <div>
+        <label for="tags">Tag:</label>
+        <input formControlName="tags" id="tags" type="text">
+      </div>
+      <button type="submit" [disabled]="addQuestionForm.invalid">
+        {{ isEditing ? 'Update Question' : 'Add Question' }}
+      </button>
+      <button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>
+.question-wrapper {
+  margin-bottom: 20px;
+}
+
+.add-button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.question {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.question-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.question-text {
+  margin-top: 5px;
+}
+
+.question-tags {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.question-user {
+  margin-top: 10px;
+}
+
+.date-time {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.answers {
+  margin-top: 10px;
+}
+
+.answer {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f0f0f0;
+}
+
+.answer-text {
+  margin-top: 5px;
+}
+
+.answer-user {
+  margin-top: 10px;
+}
+
+.answer-date {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.no-answers {
+  margin-top: 10px;
+  font-style: italic;
+  color: #888;
+}
+
+.question-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-form {
+  flex: 1;
+  min-width: 300px;
+}
+
+.question-list {
+  flex: 2;
+  min-width: 600px;
+  margin: 20px;
+}
+
+.add-question-form {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { QuestionComponent } from './question.component';
+
+describe('QuestionComponent', () => {
+  let component: QuestionComponent;
+  let fixture: ComponentFixture<QuestionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [QuestionComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(QuestionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { QuestionService } from "../../services/question.service";
+import { QuestionModel } from "../../models/question.model";
+import { AnswerService } from "../../services/answer.service";
+import { AnswerModel } from "../../models/answer.model";
+
+@Component({
+  selector: 'app-question',
+  templateUrl: './question.component.html',
+  styleUrls: ['./question.component.scss']
+})
+export class QuestionComponent implements OnInit {
+  questions: QuestionModel[] = [];
+  answersMap: { [key: number]: AnswerModel[] } = {};
+  addQuestionForm: FormGroup;
+  addAnswerForm: FormGroup;
+  filterForm: FormGroup;
+  isEditing: boolean = false;
+  isEditingAnswer: boolean = false;
+
+  constructor(
+    private questionService: QuestionService,
+    private answerService: AnswerService,
+    private fb: FormBuilder
+  ) {
+    this.addQuestionForm = this.fb.group({
+      question_id: [''],
+      title: ['', Validators.required],
+      text: ['', Validators.required],
+      tags: ['']
+    });
+
+    this.addAnswerForm = this.fb.group({
+      answer_id: [''],
+      text: ['', Validators.required]
+    });
+
+    this.filterForm = this.fb.group({
+      filterTag: [''],
+      filterText: [''],
+      filterUser: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadQuestions();
+  }
+
+  loadQuestions(): void {
+    this.questionService.getQuestions().subscribe(
+      questions => {
+        this.questions = questions;
+        this.questions.forEach(question => {
+          this.loadAnswersForQuestion(question.question_id);
+        });
+      },
+      error => console.log('Error loading questions:', error)
+    );
+  }
+
+  loadAnswersForQuestion(questionId: number): void {
+    this.answerService.getAnswers(questionId).subscribe(
+      answers => {
+        this.answersMap[questionId] = answers;
+      },
+      error => console.log(`Error loading answers for question ${questionId}:`, error)
+    );
+  }
+
+  addNewQuestion(): void {
+    if (this.addQuestionForm.valid) {
+      const title = this.addQuestionForm.get('title')?.value;
+      const text = this.addQuestionForm.get('text')?.value;
+      const tags = this.addQuestionForm.get('tags')?.value || '';
+
+      this.questionService.insertQuestion(title, text, tags).subscribe({
+        next: (question) => {
+          this.questions.push(question);
+          this.addQuestionForm.reset();
+        },
+        error: (error) => console.error('Failed to add question:', error)
+      });
+    }
+  }
+
+  submitFormAnswer(questionId: number): void {
+    if (this.isEditingAnswer) {
+      this.updateAnswer();
+    } else {
+      this.addNewAnswer(questionId);
+    }
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.addQuestionForm.reset();
+  }
+
+  addNewAnswer(questionId: number): void {
+    if (this.addAnswerForm.valid) {
+      const text = this.addAnswerForm.get('text')?.value;
+
+      this.answerService.insertAnswer(text).subscribe({
+        next: (answer) => {
+          if (!this.answersMap[questionId]) {
+            this.answersMap[questionId] = [];
+          }
+          this.answersMap[questionId].push(answer);
+          this.addAnswerForm.reset();
+        },
+        error: (error) => console.error('Failed to add answer', error)
+      });
+    }
+  }
+
+  editQuestion(question: QuestionModel): void {
+    this.isEditing = true;
+    this.addQuestionForm.patchValue({
+      question_id: question.question_id,
+      title: question.title,
+      text: question.text,
+      tags: question.tags
+    });
+  }
+
+  editAnswer(answer: AnswerModel): void {
+    this.isEditingAnswer = true;
+    this.addAnswerForm.patchValue({
+      answer_id: answer.answer_id,
+      text: answer.text
+    });
+  }
+
+  cancelEditAnswer(): void {
+    this.isEditingAnswer = false;
+    this.addAnswerForm.reset();
+  }
+
+  submitForm(): void {
+    if (this.isEditing) {
+      this.updateQuestion();
+    } else {
+      this.addNewQuestion();
+    }
+  }
+
+  updateQuestion(): void {
+    if (this.addQuestionForm.valid) {
+      const updatedQuestion: QuestionModel = this.addQuestionForm.value;
+
+      this.questionService.updateQuestion(updatedQuestion).subscribe({
+        next: (question) => {
+          const index = this.questions.findIndex(q => q.question_id == question.question_id);
+          if (index != -1) {
+            this.questions[index] = question;
+          }
+          this.addQuestionForm.reset();
+          this.isEditing = false;
+        },
+        error: (error) => console.error('Failed to update question:', error)
+      });
+    }
+  }
+
+  updateAnswer(): void {
+    if (this.addAnswerForm.valid) {
+      const updatedAnswer: AnswerModel = this.addAnswerForm.value;
+
+      this.answerService.updateAnswer(updatedAnswer).subscribe({
+        next: (answer) => {
+          const questionId = answer.question.question_id;
+          const index = this.answersMap[questionId].findIndex(a => a.answer_id == answer.answer_id);
+          if (index != -1) {
+            this.answersMap[questionId][index] = answer;
+          }
+          this.addAnswerForm.reset();
+          this.isEditingAnswer = false;
+        },
+        error: (error) => console.error('Failed to update answer:', error)
+      });
+    }
+  }
+
+  filterQuestions(): void {
+    const tag = this.filterForm.get('filterTag')?.value;
+    const text = this.filterForm.get('filterText')?.value;
+    const user = this.filterForm.get('filterUser')?.value;
+
+    this.questionService.getQuestions(tag, text, user).subscribe(
+      questions => this.questions = questions,
+      error => console.error('Error filtering questions:', error)
+    );
+  }
+
+  deleteQuestion(id: number): void {
+    this.questionService.deleteQuestion(id).subscribe({
+      next: () => {
+        this.questions = this.questions.filter(q => q.question_id != id);
+      },
+      error: (error) => console.error('Failed to delete question:', error)
+    });
+  }
+
+  deleteAnswer(id: number): void {
+    this.answerService.deleteAnswer(id).subscribe({
+      next: () => {
+        for (const questionId in this.answersMap) {
+          this.answersMap[questionId] = this.answersMap[questionId].filter(a => a.answer_id != id);
+        }
+      },
+      error: (error) => console.error('Failed to delete answer:', error)
+    });
+  }
+}
+<div class="card">
+  <h4 class="card-header">Register</h4>
+  <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- <div class="mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+      
+          </div>
+          <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+              
+          </div> -->
+          <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+              
+          </div>
+          <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted  }" />
+              
+          </div>
+          <div>
+              <button [disabled]="loading" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                  Register
+              </button>
+              <a routerLink="../login" class="btn btn-link">Cancel</a>
+          </div>
+      </form>
+  </div>
+</div>.register-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-container h2 {
+  text-align: center;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-container label {
+  margin-bottom: 5px;
+}
+
+.register-container input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-container button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-container button:hover {
+  background-color: #0056b3;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { RegisterComponent } from './register.component';
+
+describe('RegisterComponent', () => {
+  let component: RegisterComponent;
+  let fixture: ComponentFixture<RegisterComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [RegisterComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(RegisterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { UserService } from '../../services/user.service';
+import { ReactiveFormsModule} from '@angular/forms';
+
+
+@Component({ templateUrl: 'register.component.html' })
+export class RegisterComponent implements OnInit {
+    form!: FormGroup;
+    loading = false;
+    submitted = false;
+    
+
+
+    constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private userService: UserService,
+    ) { }
+
+    ngOnInit() {
+        this.form = this.formBuilder.group({
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(2)]]
+        });
+    }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
+
+    onSubmit() {
+      console.log('Register button clicked');  // Log when the button is clicked
+
+        this.submitted = true;
+
+        // reset alerts on submit
+        
+
+        // stop here if form is invalid
+        if (this.form.invalid) {
+            console.log('Form is invalid');  // Log if form is invalid
+            return;
+        }
+
+        this.loading = true;
+        console.log('Attempting registration with:', this.form.value); // Log form data being submitted
+        const username = this.form.value.username;
+        const password = this.form.value.password;
+        // this.userService.register(this.form.value)
+        //     .pipe(first())
+        //     .subscribe({
+        //         next: () => {
+        //             console.log("can we go");
+        //             console.log(this.route.snapshot);
+        //             this.router.navigate(['/login']);
+        //         },
+        this.userService.register(username, password).pipe(first()).subscribe({
+            next: () => {
+                console.log("Registration successful, navigating to login");
+                this.router.navigate(['/login']);
+            },
+                error: error => {
+                    console.error('Registration failed with error:', error);
+                    this.loading = false;
+                }
+            });
+    }
+}import { TestBed } from '@angular/core/testing';
+
+import { InMemoryDataService } from './in-memory-data.service';
+
+describe('InMemoryUserService', () => {
+  let service: InMemoryDataService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(InMemoryDataService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
+import { Injectable } from '@angular/core';
+import { UserModel } from "./models/user.model";
+import {InMemoryDbService} from "angular-in-memory-web-api";
+import {QuestionModel} from "./models/question.model";
+import {AnswerModel} from "./models/answer.model";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InMemoryDataService implements InMemoryDbService {
+
+  constructor() { }
+
+  createDb()  {
+    const users: UserModel[] = [
+      {
+        user_id: 1,
+        last_name: "Doe",
+        first_name: "John",
+        city: "New York",
+        country: "USA",
+        email: "johndoe@example.com",
+        password: "password123",
+        number: "1234567890"
+      },
+      {
+        user_id: 2,
+        last_name: "Smith",
+        first_name: "Alice",
+        city: "Los Angeles",
+        country: "USA",
+        email: "alice@example.com",
+        password: "alicepassword",
+        number: "9876543210"
+      },
+      {
+        user_id: 3,
+        last_name: "Brown",
+        first_name: "Emily",
+        city: "London",
+        country: "UK",
+        email: "emily@example.com",
+        password: "emilypassword",
+        number: "444555666"
+      }
+    ];
+
+    const questions: QuestionModel[] = [
+      {
+        question_id: 1,
+        user: {
+          user_id: 1,
+          last_name: "Doe",
+          first_name: "John",
+          city: "New York",
+          country: "USA",
+          email: "johndoe@example.com",
+          password: "password123",
+          number: "1234567890"
+        },
+        title: "How to improve JavaScript performance?",
+        text: "I'm looking for tips on improving JavaScript performance in web applications.",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "JavaScript, performance, optimization",
+        answer: [
+          {
+            answer_id: 1,
+            user: users[1], // Alice Smith provided this answer
+            text: "You can improve JavaScript performance by optimizing your code, minimizing DOM manipulation, and using efficient algorithms.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      },
+      {
+        question_id: 2,
+        user: {
+          user_id: 2,
+          last_name: "Smith",
+          first_name: "Alice",
+          city: "Los Angeles",
+          country: "USA",
+          email: "alice@example.com",
+          password: "alicepassword",
+          number: "9876543210"
+        },
+        title: "Best practices for responsive web design?",
+        text: "What are some best practices for creating responsive web designs that work well on all devices?",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "web design, responsive design, CSS",
+        answer: [
+          {
+            answer_id: 2,
+            user: users[2], // Emily Brown provided this answer
+            text: "For responsive web design, use media queries, fluid grids, and flexible images to ensure your site looks good on all devices.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      },
+      {
+        question_id: 3,
+        user: {
+          user_id: 3,
+          last_name: "Brown",
+          first_name: "Emily",
+          city: "London",
+          country: "UK",
+          email: "emily@example.com",
+          password: "emilypassword",
+          number: "444555666"
+        },
+        title: "How to handle user authentication in Angular applications?",
+        text: "I'm building an Angular application and need guidance on implementing user authentication securely.",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "Angular, authentication, security",
+        answer: [
+          {
+            answer_id: 3,
+            user: users[0], // John Doe provided this answer
+            text: "To handle user authentication in Angular, you can use libraries like Angular Firebase or implement JWT authentication with an authentication service.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      }
+    ];
+
+
+    const answers: AnswerModel[] = [
+      {
+        answer_id: 1,
+        user: users[1], // Alice Smith provided this answer
+        text: "You can improve JavaScript performance by optimizing your code, minimizing DOM manipulation, and using efficient algorithms.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      },
+      {
+        answer_id: 2,
+        user: users[2], // Emily Brown provided this answer
+        text: "For responsive web design, use media queries, fluid grids, and flexible images to ensure your site looks good on all devices.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      },
+      {
+        answer_id: 3,
+        user: users[0], // John Doe provided this answer
+        text: "To handle user authentication in Angular, you can use libraries like Angular Firebase or implement JWT authentication with an authentication service.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      }
+    ];
+    return {users, questions, answers};
+
+
+  }
+}
+import {QuestionModel} from "./question.model";
+import {UserModel} from "./user.model";
+
+export interface AnswerModel {
+  answer_id: number,
+  user: UserModel,
+  question : QuestionModel,
+  text:string,
+  time: Date,
+  date: Date,
+  image: Uint8Array
+}
+import {UserModel} from "./user.model";
+import {AnswerModel} from "./answer.model";
+
+export interface QuestionModel {
+  question_id : number,
+  user : UserModel,
+  title: string,
+  text: string,
+  date: Date,
+  time: Date,
+  image: string,
+  tags: string,
+
+}
+export interface UserModel {
+  user_id: number,
+  last_name: string,
+  first_name: string,
+  city: string,
+  country: string,
+  email: string,
+  password: string,
+  number: string
+}
+import {Injectable} from "@angular/core";
+import { HttpClient} from '@angular/common/http';
+import {Observable} from "rxjs";
+import {AnswerModel} from "../models/answer.model";
+
+
+@Injectable({ providedIn: 'root' })
+export class AnswerService {
+
+  private answerUrl = 'http://localhost:8080/answer';
+  constructor(
+    private http: HttpClient ) { }
+
+  // getAnswers(questionId: number): Observable<AnswerModel[]> {
+  //   return this.http.get<AnswerModel[]>(`${this.answerUrl}/getByQuestionId?questionId=${questionId}`);
+  // }
+
+  updateAnswer(answer: AnswerModel): Observable<AnswerModel> {
+    return this.http.put<AnswerModel>(`${this.answerUrl}/updateAnswer`, answer);
+  }
+
+  deleteAnswer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.answerUrl}/deleteAnswerById?id=${id}`);
+  }
+
+  insertAnswer(text: string): Observable<AnswerModel> {
+    const answer = {text};
+    return this.http.post<AnswerModel>(`${this.answerUrl}/insertAnswer`, answer);
+  }
+}
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { QuestionModel } from "../models/question.model";
+import {AnswerModel} from "../models/answer.model";
+import {QuestionComponent} from "../auth/question/question.component";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class QuestionService {
+  private readonly questionUrl = 'http://localhost:8080/question';
+  private readonly answerUrl = 'http://localhost:8080/answer';
+
+
+  constructor(private http: HttpClient) { }
+
+  getQuestions(tag?: string, text?: string, user?: string): Observable<QuestionModel[]> {
+    let params = new HttpParams();
+    if (tag) params = params.append('tag', tag);
+    if (text) params = params.append('text', text);
+    if (user) params = params.append('user', user);
+    return this.http.get<QuestionModel[]>(`${this.questionUrl}/getQuestions`, { params });
+  }
+
+  insertQuestion(title: string, text: string, tags: string): Observable<QuestionModel> {
+    const question = { title, text, tags };
+    return this.http.post<QuestionModel>(`${this.questionUrl}/insertQuestion`, question);
+  }
+
+  updateQuestion(question: QuestionModel): Observable<QuestionModel> {
+    return this.http.put<QuestionModel>(`${this.questionUrl}/updateQuestion`, question);
+  }
+
+  deleteQuestion(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.questionUrl}/deleteQuestionById?id=${id}`);
+  }
+
+
+}
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UserModel } from '../models/user.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private userUrl = 'http://localhost:8080/user';  // URL to web api
+
+  constructor(private http: HttpClient) { }
+
+  // register(user: any): Observable<any> {
+  //   return this.http.post<any>(`${this.userUrl}/register`, user);
+  // }
+
+  register(username: string, password: string): Observable<any> {
+    const url = `${this.userUrl}/register/${username}/${password}`;
+    return this.http.get(url);  // Using GET for demonstration as per your scenario
+}
+
+
+  findUserByEmail (
+    email:string,
+    password: string
+  ):Observable<UserModel> { return this.http.get<UserModel>(`${this.userUrl}/1`) }
+
+  findUserByUsername(username: string): Observable<UserModel> {
+    const url = `${this.userUrl}/getUserByUsername/${username}`;
+    return this.http.get<UserModel>(url);
+  }
+
+  getUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(this.userUrl+'/getAllUsers');
+  }
+}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+
+import {RegisterComponent} from "./auth/register/register.component";
+import {LoginComponent} from './auth/login/login.component';
+import {QuestionComponent} from "./auth/question/question.component";
+import {AuthComponent} from "./auth/auth/auth.component";
+
+
+const routes: Routes = [
+  { path: '', component: AuthComponent },
+  { path: 'register', component: RegisterComponent },
+  { path : 'login', component: LoginComponent },
+  { path : 'question', component: QuestionComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+<router-outlet>
+
+</router-outlet>
+
+
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent
+      ],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it(`should have as title 'sd2'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.title).toEqual('sd2');
+  });
+
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sd2');
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
+})
+export class AppComponent {
+  title = 'StackOverflow';
+
+  register() {
+    // Implement your register logic here
+    console.log('Register clicked');
+  }
+
+  login() {
+    // Implement your login logic here
+    console.log('Log in clicked');
+  }
+
+}
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import {AuthModule} from "./auth/auth.module";
+import {HttpClientInMemoryWebApiModule} from "angular-in-memory-web-api";
+import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
+
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    AuthModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+<p>answer works!</p>
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AnswerComponent } from './answer.component';
+
+describe('AnswerComponent', () => {
+  let component: AnswerComponent;
+  let fixture: ComponentFixture<AnswerComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AnswerComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(AnswerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-answer',
+  templateUrl: './answer.component.html',
+  styleUrl: './answer.component.scss'
+})
+export class AnswerComponent {
+
+}
+<router-outlet></router-outlet>
+<body style="background-color: orange;">
+<div style="text-align: center; margin-top: 100px;">
+  <h1>Stack Overflow</h1>
+  <div style="margin-top: 20px;">
+    <button routerLink="/register">Register</button>
+    <button routerLink="/login">Log in</button>
+  </div>
+</div>
+</body>
+body {
+  background-color: orange;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AuthComponent } from './auth.component';
+
+describe('AuthComponent', () => {
+  let component: AuthComponent;
+  let fixture: ComponentFixture<AuthComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AuthComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(AuthComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-auth',
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.scss'
+})
+export class AuthComponent {
+
+}
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { QuestionComponent } from './question/question.component';
+import { AuthComponent } from './auth/auth.component';
+import {RouterModule} from "@angular/router";
+import { FormsModule} from "@angular/forms";
+import { AnswerComponent } from './answer/answer.component';
+
+
+@NgModule({
+  declarations: [
+    RegisterComponent,
+    LoginComponent,
+    QuestionComponent,
+    AuthComponent,
+    AnswerComponent
+  ],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    FormsModule
+  ]
+})
+export class AuthModule { }
+<div class="login-container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div>
+      <label>Username:</label>
+      <input type="text" formControlName="username">
+      <div *ngIf="f['username']touched">
+        Username is required.
+      </div>
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" formControlName="password">
+      <div *ngIf="f['password']touched">
+        Password is required.
+      </div>
+      <div *ngIf="f['password']touched">
+        Password must be at least 2 characters.
+      </div>
+    </div>
+    <button type="submit" [disabled]="loading">Log In</button>
+  </form>
+</div>
+.login-container {
+  max-width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+}
+
+.login-container div {
+  margin-bottom: 10px;
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [LoginComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  loading = false;
+
+  constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required]],  // Changed from email to username
+      password: ['', [Validators.required, Validators.minLength(2)]]
+    });
+  }
+
+  get f() { return this.loginForm.controls; }
+
+  login(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
+
+    this.userService.findUserByUsername(username).subscribe({
+      next: (user: any) => {
+        this.router.navigate(['/question']);
+      },
+      error: (error: any) => {
+        console.error('Login failed:', error);
+        this.loading = false;
+      }
+    });
+  }
+}
+<div class="container">
+  <!-- Filter Form -->
+  <div class="filter-form">
+    <form [formGroup]="filterForm" (ngSubmit)="filterQuestions()">
+      <div>
+        <label for="filterTag">Filter by Tag:</label>
+        <input formControlName="filterTag" id="filterTag" type="text">
+      </div>
+      <div>
+        <label for="filterText">Filter by Text:</label>
+        <input formControlName="filterText" id="filterText" type="text">
+      </div>
+      <div>
+        <label for="filterUser">Filter by User:</label>
+        <input formControlName="filterUser" id="filterUser" type="text">
+      </div>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  <!-- Question List -->
+  <div class="question-list">
+    <div *ngFor="let question of questions">
+      <h3>{{ question.title }}</h3>
+      <p>{{ question.text }}</p>
+      <p>{{ question.date }}</p>
+      <p>{{ question.time }}</p>
+      <small>Tag: {{ question.tags }}</small>
+      <div>
+        <button (click)="deleteQuestion(question.question_id)">Delete</button>
+        <button (click)="editQuestion(question)">Edit</button>
+        <button>Like</button>
+        <button>Dislike</button>
+      </div>
+      <!-- Display Answers -->
+      <div *ngIf="answersMap[question.question_id]">
+        <h4>Answers:</h4>
+        <div *ngFor="let answer of answersMap[question.question_id]">
+          <p>{{ answer.text }}</p>
+          <p>{{ answer.date }}</p>
+          <p>{{ answer.time }}</p>
+          <div>
+            <button (click)="editAnswer(answer)">Edit Answer</button>
+            <button (click)="deleteAnswer(answer.answer_id)">Delete Answer</button>
+            <button>Like Answer</button>
+            <button>Dislike Answer</button>
+          </div>
+        </div>
+        <!-- Add Answer Form -->
+        <form [formGroup]="addAnswerForm" (ngSubmit)="submitFormAnswer(question.question_id)">
+          <div>
+            <label for="text">Answer:</label>
+            <textarea formControlName="text" id="text" required></textarea>
+          </div>
+          <button type="submit" [disabled]="addAnswerForm.invalid">
+            {{ isEditingAnswer ? 'Update Answer' : 'Add Answer' }}
+          </button>
+          <button type="button" *ngIf="isEditingAnswer" (click)="cancelEditAnswer()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Question Form -->
+  <div class="add-question-form">
+    <form [formGroup]="addQuestionForm" (ngSubmit)="submitForm()">
+      <div>
+        <label for="title">Title:</label>
+        <input formControlName="title" id="title" type="text" required>
+      </div>
+      <div>
+        <label for="text">Question:</label>
+        <textarea formControlName="text" id="text" required></textarea>
+      </div>
+      <div>
+        <label for="tags">Tag:</label>
+        <input formControlName="tags" id="tags" type="text">
+      </div>
+      <button type="submit" [disabled]="addQuestionForm.invalid">
+        {{ isEditing ? 'Update Question' : 'Add Question' }}
+      </button>
+      <button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>
+.question-wrapper {
+  margin-bottom: 20px;
+}
+
+.add-button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.question {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.question-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.question-text {
+  margin-top: 5px;
+}
+
+.question-tags {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.question-user {
+  margin-top: 10px;
+}
+
+.date-time {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.answers {
+  margin-top: 10px;
+}
+
+.answer {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f0f0f0;
+}
+
+.answer-text {
+  margin-top: 5px;
+}
+
+.answer-user {
+  margin-top: 10px;
+}
+
+.answer-date {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.no-answers {
+  margin-top: 10px;
+  font-style: italic;
+  color: #888;
+}
+
+.question-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-form {
+  flex: 1;
+  min-width: 300px;
+}
+
+.question-list {
+  flex: 2;
+  min-width: 600px;
+  margin: 20px;
+}
+
+.add-question-form {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { QuestionComponent } from './question.component';
+
+describe('QuestionComponent', () => {
+  let component: QuestionComponent;
+  let fixture: ComponentFixture<QuestionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [QuestionComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(QuestionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { QuestionService } from "../../services/question.service";
+import { QuestionModel } from "../../models/question.model";
+import { AnswerService } from "../../services/answer.service";
+import { AnswerModel } from "../../models/answer.model";
+
+@Component({
+  selector: 'app-question',
+  templateUrl: './question.component.html',
+  styleUrls: ['./question.component.scss']
+})
+export class QuestionComponent implements OnInit {
+  questions: QuestionModel[] = [];
+  answersMap: { [key: number]: AnswerModel[] } = {};
+  addQuestionForm: FormGroup;
+  addAnswerForm: FormGroup;
+  filterForm: FormGroup;
+  isEditing: boolean = false;
+  isEditingAnswer: boolean = false;
+
+  constructor(
+    private questionService: QuestionService,
+    private answerService: AnswerService,
+    private fb: FormBuilder
+  ) {
+    this.addQuestionForm = this.fb.group({
+      question_id: [''],
+      title: ['', Validators.required],
+      text: ['', Validators.required],
+      tags: ['']
+    });
+
+    this.addAnswerForm = this.fb.group({
+      answer_id: [''],
+      text: ['', Validators.required]
+    });
+
+    this.filterForm = this.fb.group({
+      filterTag: [''],
+      filterText: [''],
+      filterUser: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadQuestions();
+  }
+
+  loadQuestions(): void {
+    this.questionService.getQuestions().subscribe(
+      questions => {
+        this.questions = questions;
+        this.questions.forEach(question => {
+          this.loadAnswersForQuestion(question.question_id);
+        });
+      },
+      error => console.log('Error loading questions:', error)
+    );
+  }
+
+  loadAnswersForQuestion(questionId: number): void {
+    this.answerService.getAnswers(questionId).subscribe(
+      answers => {
+        this.answersMap[questionId] = answers;
+      },
+      error => console.log(`Error loading answers for question ${questionId}:`, error)
+    );
+  }
+
+  addNewQuestion(): void {
+    if (this.addQuestionForm.valid) {
+      const title = this.addQuestionForm.get('title')?.value;
+      const text = this.addQuestionForm.get('text')?.value;
+      const tags = this.addQuestionForm.get('tags')?.value || '';
+
+      this.questionService.insertQuestion(title, text, tags).subscribe({
+        next: (question) => {
+          this.questions.push(question);
+          this.addQuestionForm.reset();
+        },
+        error: (error) => console.error('Failed to add question:', error)
+      });
+    }
+  }
+
+  submitFormAnswer(questionId: number): void {
+    if (this.isEditingAnswer) {
+      this.updateAnswer();
+    } else {
+      this.addNewAnswer(questionId);
+    }
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.addQuestionForm.reset();
+  }
+
+  addNewAnswer(questionId: number): void {
+    if (this.addAnswerForm.valid) {
+      const text = this.addAnswerForm.get('text')?.value;
+
+      this.answerService.insertAnswer(text).subscribe({
+        next: (answer) => {
+          if (!this.answersMap[questionId]) {
+            this.answersMap[questionId] = [];
+          }
+          this.answersMap[questionId].push(answer);
+          this.addAnswerForm.reset();
+        },
+        error: (error) => console.error('Failed to add answer', error)
+      });
+    }
+  }
+
+  editQuestion(question: QuestionModel): void {
+    this.isEditing = true;
+    this.addQuestionForm.patchValue({
+      question_id: question.question_id,
+      title: question.title,
+      text: question.text,
+      tags: question.tags
+    });
+  }
+
+  editAnswer(answer: AnswerModel): void {
+    this.isEditingAnswer = true;
+    this.addAnswerForm.patchValue({
+      answer_id: answer.answer_id,
+      text: answer.text
+    });
+  }
+
+  cancelEditAnswer(): void {
+    this.isEditingAnswer = false;
+    this.addAnswerForm.reset();
+  }
+
+  submitForm(): void {
+    if (this.isEditing) {
+      this.updateQuestion();
+    } else {
+      this.addNewQuestion();
+    }
+  }
+
+  updateQuestion(): void {
+    if (this.addQuestionForm.valid) {
+      const updatedQuestion: QuestionModel = this.addQuestionForm.value;
+
+      this.questionService.updateQuestion(updatedQuestion).subscribe({
+        next: (question) => {
+          const index = this.questions.findIndex(q => q.question_id == question.question_id);
+          if (index != -1) {
+            this.questions[index] = question;
+          }
+          this.addQuestionForm.reset();
+          this.isEditing = false;
+        },
+        error: (error) => console.error('Failed to update question:', error)
+      });
+    }
+  }
+
+  updateAnswer(): void {
+    if (this.addAnswerForm.valid) {
+      const updatedAnswer: AnswerModel = this.addAnswerForm.value;
+
+      this.answerService.updateAnswer(updatedAnswer).subscribe({
+        next: (answer) => {
+          const questionId = answer.question.question_id;
+          const index = this.answersMap[questionId].findIndex(a => a.answer_id == answer.answer_id);
+          if (index != -1) {
+            this.answersMap[questionId][index] = answer;
+          }
+          this.addAnswerForm.reset();
+          this.isEditingAnswer = false;
+        },
+        error: (error) => console.error('Failed to update answer:', error)
+      });
+    }
+  }
+
+  filterQuestions(): void {
+    const tag = this.filterForm.get('filterTag')?.value;
+    const text = this.filterForm.get('filterText')?.value;
+    const user = this.filterForm.get('filterUser')?.value;
+
+    this.questionService.getQuestions(tag, text, user).subscribe(
+      questions => this.questions = questions,
+      error => console.error('Error filtering questions:', error)
+    );
+  }
+
+  deleteQuestion(id: number): void {
+    this.questionService.deleteQuestion(id).subscribe({
+      next: () => {
+        this.questions = this.questions.filter(q => q.question_id != id);
+      },
+      error: (error) => console.error('Failed to delete question:', error)
+    });
+  }
+
+  deleteAnswer(id: number): void {
+    this.answerService.deleteAnswer(id).subscribe({
+      next: () => {
+        for (const questionId in this.answersMap) {
+          this.answersMap[questionId] = this.answersMap[questionId].filter(a => a.answer_id != id);
+        }
+      },
+      error: (error) => console.error('Failed to delete answer:', error)
+    });
+  }
+}
+<div class="card">
+  <h4 class="card-header">Register</h4>
+  <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- <div class="mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+      
+          </div>
+          <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+              
+          </div> -->
+          <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted }" />
+              
+          </div>
+          <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted  }" />
+              
+          </div>
+          <div>
+              <button [disabled]="loading" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                  Register
+              </button>
+              <a routerLink="../login" class="btn btn-link">Cancel</a>
+          </div>
+      </form>
+  </div>
+</div>.register-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-container h2 {
+  text-align: center;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-container label {
+  margin-bottom: 5px;
+}
+
+.register-container input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-container button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-container button:hover {
+  background-color: #0056b3;
+}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { RegisterComponent } from './register.component';
+
+describe('RegisterComponent', () => {
+  let component: RegisterComponent;
+  let fixture: ComponentFixture<RegisterComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [RegisterComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(RegisterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { UserService } from '../../services/user.service';
+import { ReactiveFormsModule} from '@angular/forms';
+
+
+@Component({ templateUrl: 'register.component.html' })
+export class RegisterComponent implements OnInit {
+    form!: FormGroup;
+    loading = false;
+    submitted = false;
+    
+
+
+    constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private userService: UserService,
+    ) { }
+
+    ngOnInit() {
+        this.form = this.formBuilder.group({
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(2)]]
+        });
+    }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
+
+    onSubmit() {
+      console.log('Register button clicked');  // Log when the button is clicked
+
+        this.submitted = true;
+
+        // reset alerts on submit
+        
+
+        // stop here if form is invalid
+        if (this.form.invalid) {
+            console.log('Form is invalid');  // Log if form is invalid
+            return;
+        }
+
+        this.loading = true;
+        console.log('Attempting registration with:', this.form.value); // Log form data being submitted
+        const username = this.form.value.username;
+        const password = this.form.value.password;
+        // this.userService.register(this.form.value)
+        //     .pipe(first())
+        //     .subscribe({
+        //         next: () => {
+        //             console.log("can we go");
+        //             console.log(this.route.snapshot);
+        //             this.router.navigate(['/login']);
+        //         },
+        this.userService.register(username, password).pipe(first()).subscribe({
+            next: () => {
+                console.log("Registration successful, navigating to login");
+                this.router.navigate(['/login']);
+            },
+                error: error => {
+                    console.error('Registration failed with error:', error);
+                    this.loading = false;
+                }
+            });
+    }
+}import { TestBed } from '@angular/core/testing';
+
+import { InMemoryDataService } from './in-memory-data.service';
+
+describe('InMemoryUserService', () => {
+  let service: InMemoryDataService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(InMemoryDataService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
+import { Injectable } from '@angular/core';
+import { UserModel } from "./models/user.model";
+import {InMemoryDbService} from "angular-in-memory-web-api";
+import {QuestionModel} from "./models/question.model";
+import {AnswerModel} from "./models/answer.model";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InMemoryDataService implements InMemoryDbService {
+
+  constructor() { }
+
+  createDb()  {
+    const users: UserModel[] = [
+      {
+        user_id: 1,
+        last_name: "Doe",
+        first_name: "John",
+        city: "New York",
+        country: "USA",
+        email: "johndoe@example.com",
+        password: "password123",
+        number: "1234567890"
+      },
+      {
+        user_id: 2,
+        last_name: "Smith",
+        first_name: "Alice",
+        city: "Los Angeles",
+        country: "USA",
+        email: "alice@example.com",
+        password: "alicepassword",
+        number: "9876543210"
+      },
+      {
+        user_id: 3,
+        last_name: "Brown",
+        first_name: "Emily",
+        city: "London",
+        country: "UK",
+        email: "emily@example.com",
+        password: "emilypassword",
+        number: "444555666"
+      }
+    ];
+
+    const questions: QuestionModel[] = [
+      {
+        question_id: 1,
+        user: {
+          user_id: 1,
+          last_name: "Doe",
+          first_name: "John",
+          city: "New York",
+          country: "USA",
+          email: "johndoe@example.com",
+          password: "password123",
+          number: "1234567890"
+        },
+        title: "How to improve JavaScript performance?",
+        text: "I'm looking for tips on improving JavaScript performance in web applications.",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "JavaScript, performance, optimization",
+        answer: [
+          {
+            answer_id: 1,
+            user: users[1], // Alice Smith provided this answer
+            text: "You can improve JavaScript performance by optimizing your code, minimizing DOM manipulation, and using efficient algorithms.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      },
+      {
+        question_id: 2,
+        user: {
+          user_id: 2,
+          last_name: "Smith",
+          first_name: "Alice",
+          city: "Los Angeles",
+          country: "USA",
+          email: "alice@example.com",
+          password: "alicepassword",
+          number: "9876543210"
+        },
+        title: "Best practices for responsive web design?",
+        text: "What are some best practices for creating responsive web designs that work well on all devices?",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "web design, responsive design, CSS",
+        answer: [
+          {
+            answer_id: 2,
+            user: users[2], // Emily Brown provided this answer
+            text: "For responsive web design, use media queries, fluid grids, and flexible images to ensure your site looks good on all devices.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      },
+      {
+        question_id: 3,
+        user: {
+          user_id: 3,
+          last_name: "Brown",
+          first_name: "Emily",
+          city: "London",
+          country: "UK",
+          email: "emily@example.com",
+          password: "emilypassword",
+          number: "444555666"
+        },
+        title: "How to handle user authentication in Angular applications?",
+        text: "I'm building an Angular application and need guidance on implementing user authentication securely.",
+        date: new Date(),
+        time: new Date(),
+        image: new Uint8Array(),
+        tag: "Angular, authentication, security",
+        answer: [
+          {
+            answer_id: 3,
+            user: users[0], // John Doe provided this answer
+            text: "To handle user authentication in Angular, you can use libraries like Angular Firebase or implement JWT authentication with an authentication service.",
+            time: new Date(),
+            date: new Date(),
+            image: new Uint8Array() // You may need to provide actual image data
+          }
+        ]
+      }
+    ];
+
+
+    const answers: AnswerModel[] = [
+      {
+        answer_id: 1,
+        user: users[1], // Alice Smith provided this answer
+        text: "You can improve JavaScript performance by optimizing your code, minimizing DOM manipulation, and using efficient algorithms.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      },
+      {
+        answer_id: 2,
+        user: users[2], // Emily Brown provided this answer
+        text: "For responsive web design, use media queries, fluid grids, and flexible images to ensure your site looks good on all devices.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      },
+      {
+        answer_id: 3,
+        user: users[0], // John Doe provided this answer
+        text: "To handle user authentication in Angular, you can use libraries like Angular Firebase or implement JWT authentication with an authentication service.",
+        time: new Date(),
+        date: new Date(),
+        image: new Uint8Array() // You may need to provide actual image data
+      }
+    ];
+    return {users, questions, answers};
+
+
+  }
+}
+import {QuestionModel} from "./question.model";
+import {UserModel} from "./user.model";
+
+export interface AnswerModel {
+  answer_id: number,
+  user: UserModel,
+  question : QuestionModel,
+  text:string,
+  time: Date,
+  date: Date,
+  image: Uint8Array
+}
+import {UserModel} from "./user.model";
+import {AnswerModel} from "./answer.model";
+
+export interface QuestionModel {
+  question_id : number,
+  user : UserModel,
+  title: string,
+  text: string,
+  date: Date,
+  time: Date,
+  image: string,
+  tags: string,
+
+}
+export interface UserModel {
+  user_id: number,
+  last_name: string,
+  first_name: string,
+  city: string,
+  country: string,
+  email: string,
+  password: string,
+  number: string
+}
+import {Injectable} from "@angular/core";
+import { HttpClient} from '@angular/common/http';
+import {Observable} from "rxjs";
+import {AnswerModel} from "../models/answer.model";
+
+
+@Injectable({ providedIn: 'root' })
+export class AnswerService {
+
+  private answerUrl = 'http://localhost:8080/answer';
+  constructor(
+    private http: HttpClient ) { }
+
+  // getAnswers(questionId: number): Observable<AnswerModel[]> {
+  //   return this.http.get<AnswerModel[]>(`${this.answerUrl}/getByQuestionId?questionId=${questionId}`);
+  // }
+
+  updateAnswer(answer: AnswerModel): Observable<AnswerModel> {
+    return this.http.put<AnswerModel>(`${this.answerUrl}/updateAnswer`, answer);
+  }
+
+  deleteAnswer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.answerUrl}/deleteAnswerById?id=${id}`);
+  }
+
+  insertAnswer(text: string): Observable<AnswerModel> {
+    const answer = {text};
+    return this.http.post<AnswerModel>(`${this.answerUrl}/insertAnswer`, answer);
+  }
+}
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { QuestionModel } from "../models/question.model";
+import {AnswerModel} from "../models/answer.model";
+import {QuestionComponent} from "../auth/question/question.component";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class QuestionService {
+  private readonly questionUrl = 'http://localhost:8080/question';
+  private readonly answerUrl = 'http://localhost:8080/answer';
+
+
+  constructor(private http: HttpClient) { }
+
+  getQuestions(tag?: string, text?: string, user?: string): Observable<QuestionModel[]> {
+    let params = new HttpParams();
+    if (tag) params = params.append('tag', tag);
+    if (text) params = params.append('text', text);
+    if (user) params = params.append('user', user);
+    return this.http.get<QuestionModel[]>(`${this.questionUrl}/getQuestions`, { params });
+  }
+
+  insertQuestion(title: string, text: string, tags: string): Observable<QuestionModel> {
+    const question = { title, text, tags };
+    return this.http.post<QuestionModel>(`${this.questionUrl}/insertQuestion`, question);
+  }
+
+  updateQuestion(question: QuestionModel): Observable<QuestionModel> {
+    return this.http.put<QuestionModel>(`${this.questionUrl}/updateQuestion`, question);
+  }
+
+  deleteQuestion(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.questionUrl}/deleteQuestionById?id=${id}`);
+  }
+
+
+}
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UserModel } from '../models/user.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private userUrl = 'http://localhost:8080/user';  // URL to web api
+
+  constructor(private http: HttpClient) { }
+
+  // register(user: any): Observable<any> {
+  //   return this.http.post<any>(`${this.userUrl}/register`, user);
+  // }
+
+  register(username: string, password: string): Observable<any> {
+    const url = `${this.userUrl}/register/${username}/${password}`;
+    return this.http.get(url);  // Using GET for demonstration as per your scenario
+}
+
+
+  findUserByEmail (
+    email:string,
+    password: string
+  ):Observable<UserModel> { return this.http.get<UserModel>(`${this.userUrl}/1`) }
+
+  findUserByUsername(username: string): Observable<UserModel> {
+    const url = `${this.userUrl}/getUserByUsername/${username}`;
+    return this.http.get<UserModel>(url);
+  }
+
+  getUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(this.userUrl+'/getAllUsers');
+  }
+}

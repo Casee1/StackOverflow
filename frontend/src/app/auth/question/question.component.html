@@ -1,0 +1,97 @@
+<div class="container" xmlns:Score="http://www.w3.org/1999/xhtml">
+  <!-- Filter Form -->
+  <div class="filter-form">
+    <form [formGroup]="filterForm" (ngSubmit)="filterQuestions()">
+      <div>
+        <label for="filterTag">Filter by Tag:</label>
+        <input formControlName="filterTag" id="filterTag" type="text">
+      </div>
+      <div>
+        <label for="filterText">Filter by Text:</label>
+        <input formControlName="filterText" id="filterText" type="text">
+      </div>
+      <div>
+        <label for="filterUser">Filter by User:</label>
+        <input formControlName="filterUser" id="filterUser" type="text">
+      </div>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  <!-- Question List -->
+  <div class="question-list">
+    <div *ngFor="let question of questions">
+      <h3>{{ question.title }}</h3>
+      <p>Likes: {{ question.likes }}</p>
+      <p>Dislikes: {{ question.dislikes }}</p>
+      <p>{{ question.text }}</p>
+      <p>Date: {{ question.date }}</p>
+      <p>Time: {{ question.time }}</p>
+      <p>First Name: {{question.user.first_name}}</p>
+      <p>Last Name: {{question.user.last_name}}</p>
+      <p>Score: {{question.user.score}}</p>
+      <small>Tag: {{ question.tags }}</small>
+      <div>
+        <button (click)="deleteQuestion(question.question_id)">Delete</button>
+        <button (click)="editQuestion(question)">Edit</button>
+        <button (click)="likeQuestion(question.question_id)"> Like</button>
+        <button (click)="dislikeQuestion(question.question_id)">Dislike</button>
+      </div>
+      <!-- Display Answers -->
+      <div *ngIf="answersMap[question.question_id]">
+        <h4>Answers:</h4>
+        <div *ngFor="let answer of answersMap[question.question_id]">
+          <p>Likes: {{ answer.likes }}</p>
+          <p>Dislikes: {{ answer.dislikes }}</p>
+          <p>{{ answer.text }}</p>
+          <p>Date: {{ answer.date }}</p>
+          <p>Time: {{ answer.time }}</p>
+          <p>First name: {{answer.user.first_name}}</p>
+          <p>Last_name: {{answer.user.last_name}}</p>
+          <p>Score: {{answer.user.score}}</p>
+          <div>
+            <button (click)="editAnswer(answer)">Edit Answer</button>
+            <button (click)="deleteAnswer(answer.answer_id)">Delete Answer</button>
+            <button (click)="likeAnswer(answer.answer_id)">Like Answer</button>
+            <button (click)="dislikeAnswer(answer.answer_id)">Dislike Answer</button>
+          </div>
+        </div>
+        <!-- Add Answer Form -->
+        <form [formGroup]="addAnswerForm" (ngSubmit)="submitFormAnswer(question.question_id)">
+          <div>
+            <label for="text">Answer:</label>
+            <textarea formControlName="text" id="text" required></textarea>
+          </div>
+          <button type="submit" [disabled]="addAnswerForm.invalid">
+            {{ isEditingAnswer ? 'Update Answer' : 'Add Answer' }}
+          </button>
+          <button type="button" *ngIf="isEditingAnswer" (click)="cancelEditAnswer()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Question Form -->
+  <div class="add-question-form">
+    <form [formGroup]="addQuestionForm" (ngSubmit)="submitForm()">
+      <div>
+        <label for="title">Title:</label>
+        <input formControlName="title" id="title" type="text" required>
+      </div>
+      <div>
+        <label for="text">Question:</label>
+        <textarea formControlName="text" id="text" required></textarea>
+      </div>
+      <div>
+        <label for="tags">Tag:</label>
+        <input formControlName="tags" id="tags" type="text">
+      </div>
+      <button type="submit" [disabled]="addQuestionForm.invalid">
+        {{ isEditing ? 'Update Question' : 'Add Question' }}
+      </button>
+      <button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+    </form>
+    <!-- Show Users Button -->
+    <button (click)="loadUsers()">Show Users</button>
+  </div>
+</div>

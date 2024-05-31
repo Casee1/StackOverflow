@@ -1,0 +1,110 @@
+.question-wrapper {
+  margin-bottom: 20px;
+}
+
+.add-button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.question {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.question-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.question-text {
+  margin-top: 5px;
+}
+
+.question-tags {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.question-user {
+  margin-top: 10px;
+}
+
+.date-time {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.answers {
+  margin-top: 10px;
+}
+
+.answer {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f0f0f0;
+}
+
+.answer-text {
+  margin-top: 5px;
+}
+
+.answer-user {
+  margin-top: 10px;
+}
+
+.answer-date {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.no-answers {
+  margin-top: 10px;
+  font-style: italic;
+  color: #888;
+}
+
+.question-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-form {
+  flex: 1;
+  min-width: 300px;
+}
+
+.question-list {
+  flex: 2;
+  min-width: 600px;
+  margin: 20px;
+}
+
+.add-question-form {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

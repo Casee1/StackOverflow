@@ -1,0 +1,19 @@
+<div class="users-container">
+  <h2>Users</h2>
+  <div *ngFor="let user of users">
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last Name: {{ user.last_name }}</p>
+    <p>City: {{ user.city }}</p>
+    <p>Country: {{ user.country }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Phone Number: {{ user.number }}</p>
+    <p>Username: {{ user.username }}</p>
+    <p>Role: {{ user.role }}</p>
+    <p>Score: {{ user.score }}</p>
+    <p>Status: {{ user.ban === 'BANNED' ? 'Banned' : 'Active' }}</p>
+    <div>
+      <button *ngIf="user.ban !== 'BANNED'" (click)="banUser(user.user_id)">Ban</button>
+      <button *ngIf="user.ban === 'BANNED'" (click)="unbanUser(user.user_id)">Unban</button>
+    </div>
+  </div>
+</div>
